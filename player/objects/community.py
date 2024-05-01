@@ -1,21 +1,20 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from database import Base
-from sqlalchemy import Column, Integer, String, ForeignKey, Table, MetaData
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import relationship, registry
+from sqlalchemy import Column, Integer, String, Text, ForeignKey
+from sqlalchemy.orm import relationship, Mapped, mapped_column
+from typing import TYPE_CHECKING
 
-from player.objects.player import JSONEncodedPlayerList
+if TYPE_CHECKING:
+    from game.objects.community_node import CommunityNode
+    from player.objects.player import JSONEncodedPlayerList, Player
 
-@dataclass
 class Community(Base):
     __tablename__ = 'community'
-    id = Column(Integer, primary_key=True)
-    community_node_id = Column(Integer, ForeignKey('community_node.id'))
-    community_node = relationship('CommunityNode', back_populates='community', foreign_keys=[community_node_id], uselist=False)
-    community_players = Column(JSONEncodedPlayerList)
+    id: Mapped[int] = mapped_column(primary_key=True, init=False)
+    #community_node_id: Mapped[int] = mapped_column(ForeignKey('community_node.id'), nullable=True)
+    community_node: Mapped['CommunityNode'] = relationship(back_populates='community', init=False)
+    community_players: Mapped[list['Player']] = relationship(back_populates='community', init=False)
 
-    def create_new_community(communit_node_id):
-        return Community(
-            community_node_id=communit_node_id,
-            community_players=[]
-        )
+
+    def create_new_community():
+        return Community()

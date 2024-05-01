@@ -49,11 +49,17 @@ class JSONEncodedResourceBuildingList(TypeDecorator):
 
     def process_bind_param(self, value: list[ResourceBuilding], dialect):
         if value is not None:
-            return json.dumps([building.toJson() for building in value])
+            return self.valueJsonList(value)
         return value
 
     def process_result_value(self, value, dialect):
         if value is not None:
-            buildings_data = json.loads(value)
-            return [ResourceBuilding.fromJson(building) for building in buildings_data]
+            return self.valueFromJsonList(value)
         return value
+    
+    def valueJsonList(value: list[ResourceBuilding]):
+        return json.dumps([building.toJson() for building in value])
+    
+    def valueFromJsonList(value):
+        buildings_data = json.loads(value)
+        return [ResourceBuilding.fromJson(building) for building in buildings_data]

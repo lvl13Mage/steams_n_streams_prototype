@@ -8,9 +8,12 @@ from buildings.objects.technology_building import TechnologyBuilding
 class BuildingHelper:
 
     def get_initial_buildings(building_type):
+        print('BuildingHelper.get_initial_buildings')
+        print(building_type)
         buildings = []
         if building_type == 'resource_building':
             for building_id, building_data in BuildingGameConfig().list_buildings(building_type).items():
+                print(building_data['name'])
                 buildings.append(ResourceBuilding(
                     id=building_id,
                     name=building_data['name'],
@@ -34,3 +37,4 @@ class BuildingHelper:
                     cost=building_data['levels']['0']['cost'],
                     production_time=building_data['levels']['0']['production_time']
                 ))
+        return buildings

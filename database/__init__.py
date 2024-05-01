@@ -1,9 +1,9 @@
 from sqlalchemy import create_engine, Column, Integer, String, ForeignKey
 from sqlalchemy.orm import sessionmaker, relationship
 from sqlalchemy.ext.declarative import declarative_base
+from database.base import CustomBase
 
-# Base class for your models
-Base = declarative_base()
+Base = CustomBase
 
 # Setup engine
 def setup_database():
@@ -11,11 +11,11 @@ def setup_database():
     Session = sessionmaker(bind=engine)
     session = Session()
 
-    # Import models here to ensure they are known to Base
-    from game.objects.community_node import CommunityNode
-    from player.objects.player import Player
-    from player.objects.community import Community
-
+    ## Import models here to ensure they are known to Base
+    #from game.objects.community_node import CommunityNode
+    #from player.objects.player import Player
+    #from player.objects.community import Community
+#
     print('Creating tables...')
     Base.metadata.create_all(engine)
 

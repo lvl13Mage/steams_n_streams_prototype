@@ -1,17 +1,23 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from database import Base
-from sqlalchemy import Column, Integer, String, ForeignKey, Table, MetaData
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import relationship, registry
+from sqlalchemy import Column, Integer, ForeignKey
+from sqlalchemy.orm import relationship, Mapped, mapped_column
+from typing import TYPE_CHECKING
 
 from game.objects.node import Node
+if TYPE_CHECKING:
+    from player.objects.community import Community
 
-@dataclass
 class CommunityNode(Node, Base):
     __tablename__ = 'community_node'
-    id = Column(Integer, primary_key=True)
-    community_id = Column(Integer, ForeignKey('community.id'), nullable=True)
-    community = relationship('Community', back_populates='community_node', foreign_keys=[community_id], uselist=False)
+    id: Mapped[int] = mapped_column(primary_key=True, init=False)
+    community_id: Mapped[int] = mapped_column(ForeignKey('community.id'), nullable=True, init=False)
+    community: Mapped['Community'] = relationship(back_populates='community_node', init=False)
 
+    @staticmethod
     def create_new_community_node():
         return CommunityNode()
+    
+    def setCommunity(self, community_id):
+        self.community_id = community_id
+        return self

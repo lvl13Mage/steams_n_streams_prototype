@@ -43,11 +43,17 @@ class JSONEncodedProductionBuildingList(TypeDecorator):
 
     def process_bind_param(self, value: list[ProductionBuilding], dialect):
         if value is not None:
-            return json.dumps([building.toJson() for building in value])
+            return self.valueJsonList(value)
         return value
 
     def process_result_value(self, value, dialect):
         if value is not None:
-            buildings_data = json.loads(value)
-            return [ProductionBuilding.fromJson(building) for building in buildings_data]
+            return self.valueFromJsonList(value)
         return value
+    
+    def valueJsonList(value: list[ProductionBuilding]):
+        return json.dumps([building.toJson() for building in value])
+    
+    def valueFromJsonList(value: str):
+        buildings_data = json.loads(value)
+        return [ProductionBuilding.fromJson(building) for building in buildings_data]
