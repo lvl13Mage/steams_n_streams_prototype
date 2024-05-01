@@ -14,7 +14,7 @@ class ResourceBuilding(Building):
     def get_production(self, current_time, last_update_time):
         time_delta = (current_time - last_update_time) / 3600
         return self.resource_production * time_delta
-    
+
     def toJson(self):
         return json.dumps({
             'id': self.id,
@@ -61,9 +61,24 @@ class JSONEncodedResourceBuildingList(TypeDecorator):
     
     @staticmethod
     def valueToJsonList(value: list[ResourceBuilding]):
-        return json.dumps([building.toJson() for building in value])
+        return json.dumps([{"id": building.id, "building_level": building.building_level} for building in value])
     
     @staticmethod
     def valueFromJsonList(value):
         buildings_data = json.loads(value)
-        return [ResourceBuilding.fromJson(building) for building in buildings_data]
+        buildingList = []
+        for building_data in buildings_data:
+            buildingGameConfig = BuildingGameConfig()
+            building = buildingGameConfig.get_building('resource_building', building_data['id'])
+            id = building_data['id']
+            level = building_data['building_level']
+            level_data = building["levels"][str(level)]
+            buildingList.append(ResourceBuilding(
+                id=id,
+                name=building['name'],
+                cost=ResourceCollection().setResources(**level_data['cost']),
+                production_time=level_data['production_time'],
+                building_level=level,
+                resource_production=ResourceCollection().setResources(**level_data['production'])
+            ))
+        return buildingList

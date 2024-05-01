@@ -60,4 +60,18 @@ class JSONEncodedTechnologyBuildingList(TypeDecorator):
     @staticmethod
     def valueFromJsonList(value: str):
         buildings_data = json.loads(value)
-        return [TechnologyBuilding.fromJson(building) for building in buildings_data]
+        buildingList = []
+        for building_data in buildings_data:
+            buildingGameConfig = BuildingGameConfig()
+            building = buildingGameConfig.get_building('technology_building', building_data['id'])
+            id = building_data['id']
+            level = building_data['building_level']
+            level_data = building["levels"][str(level)]
+            buildingList.append(TechnologyBuilding(
+                id=id,
+                name=building['name'],
+                cost=ResourceCollection().setResources(**level_data['cost']),
+                production_time=level_data['production_time'],
+                building_level=level
+            ))
+        return buildingList
