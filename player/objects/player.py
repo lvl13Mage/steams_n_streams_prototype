@@ -6,11 +6,12 @@ import json
 from typing import TYPE_CHECKING
 
 from resources.objects.resource import JSONEncodedResourceCollection, ResourceCollection
-from buildings.objects.resource_building import JSONEncodedResourceBuildingList
-from buildings.objects.production_building import JSONEncodedProductionBuildingList
-from buildings.objects.technology_building import JSONEncodedTechnologyBuildingList
+from buildings.objects.resource_building import JSONEncodedResourceBuildingList, ResourceBuilding
+from buildings.objects.production_building import JSONEncodedProductionBuildingList, ProductionBuilding
+from buildings.objects.technology_building import JSONEncodedTechnologyBuildingList, TechnologyBuilding
 from buildings.services.building_helper import BuildingHelper
 
+# just for typehinting
 if TYPE_CHECKING:
     from player.objects.community import Community
 
@@ -20,29 +21,21 @@ class Player(Base):
     name: Mapped[str] = mapped_column(String(30))
     community_id: Mapped[int] = mapped_column(ForeignKey('community.id'), init=False)
     community: Mapped['Community'] = relationship(back_populates='community_players')
-    resources: Mapped[str] = mapped_column(Text, default_factory=JSONEncodedResourceCollection)
+    resources: Mapped['ResourceCollection'] = mapped_column(JSONEncodedResourceCollection)
+    resource_buildings: Mapped[list['ResourceBuilding']] = mapped_column(JSONEncodedResourceBuildingList, repr=False)
+    production_buildings: Mapped[list['ProductionBuilding']] = mapped_column(JSONEncodedProductionBuildingList, repr=False)
+    technology_buildings: Mapped[list['TechnologyBuilding']] = mapped_column(JSONEncodedTechnologyBuildingList, repr=False)
     world_nodes: Mapped[str] = mapped_column(Text, default='') 
     game_session: Mapped[int] = mapped_column(default=0)
-    resource_buildings: Mapped[str] = mapped_column(Text, default_factory=JSONEncodedResourceBuildingList, repr=False)
-    production_buildings: Mapped[str] = mapped_column(Text, default_factory=JSONEncodedResourceBuildingList, repr=False)
-    technology_buildings: Mapped[str] = mapped_column(Text, default_factory=JSONEncodedResourceBuildingList, repr=False)
 
     @staticmethod
     def create_new_player(community, name):
         print('Creating new player...')
-        resources = JSONEncodedResourceCollection.valueJson(
-            value=ResourceCollection()
-        )
-        resource_buildings = JSONEncodedResourceBuildingList.valueJsonList(
-            value=BuildingHelper.get_initial_buildings('resource_building')
-        )
-        production_buildings = JSONEncodedProductionBuildingList.valueJsonList(
-            value=BuildingHelper.get_initial_buildings('production_building')
-        )
-        technology_buildings = JSONEncodedTechnologyBuildingList.valueJsonList(
-            value=BuildingHelper.get_initial_buildings('technology_building')
-        )
-
+        resources = ResourceCollection()
+        resource_buildings = BuildingHelper.get_initial_buildings('resource_building')
+        production_buildings = BuildingHelper.get_initial_buildings('production_building')
+        technology_buildings = BuildingHelper.get_initial_buildings('technology_building')
+        print(resource_buildings)
         return Player(
             name=name,
             resources=resources,
@@ -51,6 +44,19 @@ class Player(Base):
             production_buildings=production_buildings,
             technology_buildings=technology_buildings
         )
+    
+    def __repr__(self):
+        return {
+            'id': self.id,
+            'name': self.name,
+            'community_id': self.community_id,
+            'resources': self.resources,
+            'world_nodes': self.world_nodes,
+            'game_session': self.game_session,
+            'resource_buildings': self.resource_buildings,
+            'production_buildings': self.production_buildings,
+            'technology_buildings': self.technology_buildings
+        }
 
 # typedecorator to return list of players consisting of ids
 class JSONEncodedPlayerList(TypeDecorator):

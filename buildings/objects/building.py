@@ -7,4 +7,3 @@ class Building:
     name: str
     cost: ResourceCollection
     production_time: int
-    building_level = 0

@@ -8,6 +8,7 @@ from resources.objects.resource import ResourceCollection
 
 @dataclass
 class ProductionBuilding(Building):
+    building_level: int
     
     def toJson(self):
         return json.dumps({
@@ -15,18 +16,19 @@ class ProductionBuilding(Building):
             'building_level': self.building_level
         })
     
-    def fromJson(json):
-        building_data = json.loads(json)
-        building = BuildingGameConfig.get_building('production_building', building_data['id'])
+    def fromJson(resource_json):
+        building_data = json.loads(resource_json)
+        buildingGameConfig = BuildingGameConfig()
+        building = buildingGameConfig.get_building('production_building', building_data['id'])
         id = building_data['id']
         level = building_data['building_level']
-        level_data = building["level"][level]
+        level_data = building["levels"][str(level)]
         return ProductionBuilding(
-            id,
-            building['name'],
-            ResourceCollection.fromJson(level_data['cost']),
-            level_data['production_time'],
-            level
+            id=id,
+            name=building['name'],
+            cost=ResourceCollection.fromJson(level_data['cost']),
+            production_time=level_data['production_time'],
+            building_level=level
         )
     
 class JSONEncodedProductionBuilding(TypeDecorator):
@@ -43,17 +45,19 @@ class JSONEncodedProductionBuildingList(TypeDecorator):
 
     def process_bind_param(self, value: list[ProductionBuilding], dialect):
         if value is not None:
-            return self.valueJsonList(value)
+            return JSONEncodedProductionBuildingList.valueToJsonList(value)
         return value
 
     def process_result_value(self, value, dialect):
         if value is not None:
-            return self.valueFromJsonList(value)
+            return JSONEncodedProductionBuildingList.valueFromJsonList(value)
         return value
     
-    def valueJsonList(value: list[ProductionBuilding]):
+    @staticmethod
+    def valueToJsonList(value: list[ProductionBuilding]):
         return json.dumps([building.toJson() for building in value])
     
+    @staticmethod
     def valueFromJsonList(value: str):
         buildings_data = json.loads(value)
         return [ProductionBuilding.fromJson(building) for building in buildings_data]

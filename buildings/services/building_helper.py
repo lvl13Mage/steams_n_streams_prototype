@@ -19,7 +19,8 @@ class BuildingHelper:
                     name=building_data['name'],
                     cost=building_data['levels']['0']['cost'],
                     production_time=building_data['levels']['0']['production_time'],
-                    resource_production=building_data['levels']['0']['production']
+                    resource_production=building_data['levels']['0']['production'],
+                    building_level=0
                 ))
         elif building_type == 'production_building':
             for building_id, building_data in BuildingGameConfig().list_buildings(building_type).items():
@@ -27,7 +28,8 @@ class BuildingHelper:
                     id=building_id,
                     name=building_data['name'],
                     cost=building_data['levels']['0']['cost'],
-                    production_time=building_data['levels']['0']['production_time']
+                    production_time=building_data['levels']['0']['production_time'],
+                    building_level=0
                 ))
         elif building_type == 'technology_building':
             for building_id, building_data in BuildingGameConfig().list_buildings(building_type).items():
@@ -35,6 +37,7 @@ class BuildingHelper:
                     id=building_id,
                     name=building_data['name'],
                     cost=building_data['levels']['0']['cost'],
-                    production_time=building_data['levels']['0']['production_time']
+                    production_time=building_data['levels']['0']['production_time'],
+                    building_level=0
                 ))
         return buildings

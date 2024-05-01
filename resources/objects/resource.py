@@ -75,17 +75,21 @@ class JSONEncodedResourceCollection(TypeDecorator):
     def process_bind_param(self, value: ResourceCollection, dialect):
         if value is not None:
             # Convert ResourceCollection to JSON string
-            return self.valueJson(value)
+            return JSONEncodedResourceCollection.valueToJson(value)
         return value
 
     def process_result_value(self, value, dialect):
         if value is not None:
             # Convert JSON string back to ResourceCollection
-            return self.valueFromJson(value)
+            return JSONEncodedResourceCollection.valueFromJson(value)
         return value
     
-    def valueJson(value):
-        return json.dumps(value.toJson())
+    @staticmethod
+    def valueToJson(value: ResourceCollection):
+        print(value.coal)
+        return value.toJson()
     
+    @staticmethod
     def valueFromJson(value):
+        print(value)
         return ResourceCollection.fromJson(value)

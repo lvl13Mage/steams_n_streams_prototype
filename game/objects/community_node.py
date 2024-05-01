@@ -5,6 +5,8 @@ from sqlalchemy.orm import relationship, Mapped, mapped_column
 from typing import TYPE_CHECKING
 
 from game.objects.node import Node
+
+# just for typehinting
 if TYPE_CHECKING:
     from player.objects.community import Community
 
@@ -20,4 +22,3 @@ class CommunityNode(Node, Base):
     
     def setCommunity(self, community_id):
         self.community_id = community_id
-        return self

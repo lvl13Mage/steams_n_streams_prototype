@@ -12,11 +12,13 @@ def setup_database():
     session = Session()
 
     ## Import models here to ensure they are known to Base
-    #from game.objects.community_node import CommunityNode
-    #from player.objects.player import Player
-    #from player.objects.community import Community
+    from game.objects.community_node import CommunityNode
+    from player.objects.player import Player
+    from player.objects.community import Community
 #
     print('Creating tables...')
     Base.metadata.create_all(engine)
 
     return session
+
+session = setup_database()

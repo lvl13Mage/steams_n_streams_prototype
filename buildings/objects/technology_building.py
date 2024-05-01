@@ -8,6 +8,7 @@ from resources.objects.resource import ResourceCollection
 
 @dataclass
 class TechnologyBuilding(Building):
+    building_level: int
 
     def toJson(self):
         return json.dumps({
@@ -15,18 +16,19 @@ class TechnologyBuilding(Building):
             'building_level': self.building_level
         })
     
-    def fromJson(json):
-        building_data = json.loads(json)
-        building = BuildingGameConfig.get_building('technology_building', building_data['id'])
+    def fromJson(resource_json):
+        building_data = json.loads(resource_json)
+        buildingGameConfig = BuildingGameConfig()
+        building = buildingGameConfig.get_building('technology_building', building_data['id'])
         id = building_data['id']
         level = building_data['building_level']
-        level_data = building["level"][level]
+        level_data = building["levels"][str(level)]
         return TechnologyBuilding(
-            id,
-            building['name'],
-            ResourceCollection.fromJson(level_data['cost']),
-            level_data['production_time'],
-            level
+            id=id,
+            name=building['name'],
+            cost=ResourceCollection.fromJson(level_data['cost']),
+            production_time=level_data['production_time'],
+            building_level=level
         )
     
 class JSONEncodedTechnologyBuilding(TypeDecorator):
@@ -43,17 +45,19 @@ class JSONEncodedTechnologyBuildingList(TypeDecorator):
 
     def process_bind_param(self, value: list[TechnologyBuilding], dialect):
         if value is not None:
-            return self.valueJsonList(value)
+            return JSONEncodedTechnologyBuildingList.valueToJsonList(value)
         return value
 
     def process_result_value(self, value, dialect):
         if value is not None:
-            return self.valueFromJsonList(value)
+            return JSONEncodedTechnologyBuildingList.valueFromJsonList(value)
         return value
     
-    def valueJsonList(value: list[TechnologyBuilding]):
+    @staticmethod
+    def valueToJsonList(value: list[TechnologyBuilding]):
         return json.dumps([building.toJson() for building in value])
     
+    @staticmethod
     def valueFromJsonList(value: str):
         buildings_data = json.loads(value)
         return [TechnologyBuilding.fromJson(building) for building in buildings_data]
