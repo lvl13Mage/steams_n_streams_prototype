@@ -1,0 +1,29 @@
+Proof of Concept
+
+Ziel: Technische umsetzbarkeit des Browsergame projekts
+
+Technische Komponenten:
+- Twitch Extension
+- Containerisiertes Backend
+- Containerisiertes Frontend
+- Twitch Bot + chat commands
+- Datenbank MySQL
+
+Gameplay Komponenten:
+- Gebäude Bauen
+- Resourcen Sammeln (auch aus gebäuden)
+- Timer für Bau und Reisen
+- Units Bauen
+- Spieler
+- Streamer (mayor)
+
+
+
+TO FUCKIN DO
+
+- we need Datenban
+- make gameconfigs for buildings and Units
+- gameconfigs = basis of values
+- serialize data maybe json of "what builds does a palayer have"
+- split gameconfig in units buildings + config dir
+- 

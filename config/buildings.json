@@ -1,0 +1,392 @@
+{
+    "buildings": {
+        "resource_building": {
+            "1": {
+                "name": "Coal Mine",
+                "description": "Produces coal",
+                "levels": {
+                    "0": {
+                        "production_time": 0,
+                        "cost": {
+                            "coal": 0,
+                            "water": 0,
+                            "copper": 0,
+                            "aetherum": 0
+                        },
+                        "production": {
+                            "coal": 0,
+                            "water": 0,
+                            "copper": 0,
+                            "aetherum": 0
+                        }
+                    },
+                    "1": {
+                        "production_time": 300,
+                        "cost": {
+                            "coal": 0,
+                            "water": 100,
+                            "copper": 200,
+                            "aetherum": 0
+                        },
+                        "production": {
+                            "coal": 10,
+                            "water": 0,
+                            "copper": 0,
+                            "aetherum": 0
+                        }
+                    },
+                    "2": {
+                        "production_time": 600,
+                        "cost": {
+                            "coal": 0,
+                            "water": 200,
+                            "copper": 400,
+                            "aetherum": 0
+                        },
+                        "production": {
+                            "coal": 20,
+                            "water": 0,
+                            "copper": 0,
+                            "aetherum": 0
+                        }
+                    },
+                    "3": {
+                        "production_time": 900,
+                        "cost": {
+                            "coal": 0,
+                            "water": 300,
+                            "copper": 600,
+                            "aetherum": 0
+                        },
+                        "production": {
+                            "coal": 30,
+                            "water": 0,
+                            "copper": 0,
+                            "aetherum": 0
+                        }
+                    },
+                    "4": {
+                        "production_time": 1200,
+                        "cost": {
+                            "coal": 0,
+                            "water": 400,
+                            "copper": 800,
+                            "aetherum": 0
+                        },
+                        "production": {
+                            "coal": 40,
+                            "water": 0,
+                            "copper": 0,
+                            "aetherum": 0
+                        }
+                    },
+                    "5": {
+                        "production_time": 1500,
+                        "cost": {
+                            "coal": 0,
+                            "water": 500,
+                            "copper": 1000,
+                            "aetherum": 0
+                        },
+                        "production": {
+                            "coal": 50,
+                            "water": 0,
+                            "copper": 0,
+                            "aetherum": 0
+                        }
+                    }
+                }
+            },
+            "2": {
+                "name": "Water Pump",
+                "description": "Produces water",
+                "levels": {
+                    "0": {
+                        "production_time": 0,
+                        "cost": {
+                            "coal": 0,
+                            "water": 0,
+                            "copper": 0,
+                            "aetherum": 0
+                        },
+                        "production": {
+                            "coal": 0,
+                            "water": 0,
+                            "copper": 0,
+                            "aetherum": 0
+                        }
+                    },
+                    "1": {
+                        "production_time": 300,
+                        "cost": {
+                            "coal": 200,
+                            "water": 0,
+                            "copper": 100,
+                            "aetherum": 0
+                        },
+                        "production": {
+                            "coal": 0,
+                            "water": 10,
+                            "copper": 0,
+                            "aetherum": 0
+                        }
+                    },
+                    "2": {
+                        "production_time": 600,
+                        "cost": {
+                            "coal": 400,
+                            "water": 0,
+                            "copper": 200,
+                            "aetherum": 0
+                        },
+                        "production": {
+                            "coal": 0,
+                            "water": 20,
+                            "copper": 0,
+                            "aetherum": 0
+                        }
+                    },
+                    "3": {
+                        "production_time": 900,
+                        "cost": {
+                            "coal": 600,
+                            "water": 0,
+                            "copper": 300,
+                            "aetherum": 0
+                        },
+                        "production": {
+                            "coal": 0,
+                            "water": 30,
+                            "copper": 0,
+                            "aetherum": 0
+                        }
+                    },
+                    "4": {
+                        "production_time": 1200,
+                        "cost": {
+                            "coal": 800,
+                            "water": 0,
+                            "copper": 400,
+                            "aetherum": 0
+                        },
+                        "production": {
+                            "coal": 0,
+                            "water": 40,
+                            "copper": 0,
+                            "aetherum": 0
+                        }
+                    },
+                    "5": {
+                        "production_time": 1500,
+                        "cost": {
+                            "coal": 1000,
+                            "water": 0,
+                            "copper": 500,
+                            "aetherum": 0
+                        },
+                        "production": {
+                            "coal": 0,
+                            "water": 50,
+                            "copper": 0,
+                            "aetherum": 0
+                        }
+                    }
+                }
+            },
+            "3": {
+                "name": "Copper Mine",
+                "description": "Produces copper",
+                "levels": {
+                    "0": {
+                        "production_time": 0,
+                        "cost": {
+                            "coal": 0,
+                            "water": 0,
+                            "copper": 0,
+                            "aetherum": 0
+                        },
+                        "production": {
+                            "coal": 0,
+                            "water": 0,
+                            "copper": 0,
+                            "aetherum": 0
+                        }
+                    },
+                    "1": {
+                        "production_time": 300,
+                        "cost": {
+                            "coal": 100,
+                            "water": 200,
+                            "copper": 0,
+                            "aetherum": 0
+                        },
+                        "production": {
+                            "coal": 0,
+                            "water": 0,
+                            "copper": 10,
+                            "aetherum": 0
+                        }
+                    },
+                    "2": {
+                        "production_time": 600,
+                        "cost": {
+                            "coal": 200,
+                            "water": 400,
+                            "copper": 0,
+                            "aetherum": 0
+                        },
+                        "production": {
+                            "coal": 0,
+                            "water": 0,
+                            "copper": 20,
+                            "aetherum": 0
+                        }
+                    },
+                    "3": {
+                        "production_time": 900,
+                        "cost": {
+                            "coal": 300,
+                            "water": 600,
+                            "copper": 0,
+                            "aetherum": 0
+                        },
+                        "production": {
+                            "coal": 0,
+                            "water": 0,
+                            "copper": 30,
+                            "aetherum": 0
+                        }
+                    },
+                    "4": {
+                        "production_time": 1200,
+                        "cost": {
+                            "coal": 400,
+                            "water": 800,
+                            "copper": 0,
+                            "aetherum": 0
+                        },
+                        "production": {
+                            "coal": 0,
+                            "water": 0,
+                            "copper": 40,
+                            "aetherum": 0
+                        }
+                    },
+                    "5": {
+                        "production_time": 1500,
+                        "cost": {
+                            "coal": 500,
+                            "water": 1000,
+                            "copper": 0,
+                            "aetherum": 0
+                        },
+                        "production": {
+                            "coal": 0,
+                            "water": 0,
+                            "copper": 50,
+                            "aetherum": 0
+                        }
+                    }
+                }
+            },
+            "4": {
+                "name": "Aetherum Extractor",
+                "description": "Produces aetherum",
+                "levels": {
+                    "0": {
+                        "production_time": 0,
+                        "cost": {
+                            "coal": 0,
+                            "water": 0,
+                            "copper": 0,
+                            "aetherum": 0
+                        },
+                        "production": {
+                            "coal": 0,
+                            "water": 0,
+                            "copper": 0,
+                            "aetherum": 0
+                        }
+                    },
+                    "1": {
+                        "production_time": 300,
+                        "cost": {
+                            "coal": 100,
+                            "water": 200,
+                            "copper": 300,
+                            "aetherum": 0
+                        },
+                        "production": {
+                            "coal": 0,
+                            "water": 0,
+                            "copper": 0,
+                            "aetherum": 10
+                        }
+                    },
+                    "2": {
+                        "production_time": 600,
+                        "cost": {
+                            "coal": 200,
+                            "water": 400,
+                            "copper": 600,
+                            "aetherum": 0
+                        },
+                        "production": {
+                            "coal": 0,
+                            "water": 0,
+                            "copper": 0,
+                            "aetherum": 20
+                        }
+                    },
+                    "3": {
+                        "production_time": 900,
+                        "cost": {
+                            "coal": 300,
+                            "water": 600,
+                            "copper": 900,
+                            "aetherum": 0
+                        },
+                        "production": {
+                            "coal": 0,
+                            "water": 0,
+                            "copper": 0,
+                            "aetherum": 30
+                        }
+                    },
+                    "4": {
+                        "production_time": 1200,
+                        "cost": {
+                            "coal": 400,
+                            "water": 800,
+                            "copper": 1200,
+                            "aetherum": 0
+                        },
+                        "production": {
+                            "coal": 0,
+                            "water": 0,
+                            "copper": 0,
+                            "aetherum": 40
+                        }
+                    },
+                    "5": {
+                        "production_time": 1500,
+                        "cost": {
+                            "coal": 500,
+                            "water": 1000,
+                            "copper": 1500,
+                            "aetherum": 0
+                        },
+                        "production": {
+                            "coal": 0,
+                            "water": 0,
+                            "copper": 0,
+                            "aetherum": 50
+                        }
+                    }
+                }
+            }
+        },
+        "production_building": {},
+        "technology_building": {}
+    }
+}
