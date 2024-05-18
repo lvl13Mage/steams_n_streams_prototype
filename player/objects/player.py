@@ -6,9 +6,7 @@ import json
 from typing import TYPE_CHECKING
 
 from resources.objects.resource import JSONEncodedResourceCollection, ResourceCollection
-from buildings.objects.resource_building import JSONEncodedResourceBuildingList, ResourceBuilding
-from buildings.objects.production_building import JSONEncodedProductionBuildingList, ProductionBuilding
-from buildings.objects.technology_building import JSONEncodedTechnologyBuildingList, TechnologyBuilding
+from buildings.objects.building_list import JSONBuildingListType, BuildingList
 from buildings.services.building_helper import BuildingHelper
 
 # just for typehinting
@@ -22,9 +20,9 @@ class Player(Base):
     community_id: Mapped[int] = mapped_column(ForeignKey('community.id'), init=False)
     community: Mapped['Community'] = relationship(back_populates='community_players')
     resources: Mapped['ResourceCollection'] = mapped_column(JSONEncodedResourceCollection)
-    resource_buildings: Mapped[list['ResourceBuilding']] = mapped_column(JSONEncodedResourceBuildingList, repr=False)
-    production_buildings: Mapped[list['ProductionBuilding']] = mapped_column(JSONEncodedProductionBuildingList, repr=False)
-    technology_buildings: Mapped[list['TechnologyBuilding']] = mapped_column(JSONEncodedTechnologyBuildingList, repr=False)
+    resource_buildings: Mapped['BuildingList'] = mapped_column(JSONBuildingListType, repr=False)
+    production_buildings: Mapped['BuildingList'] = mapped_column(JSONBuildingListType, repr=False)
+    technology_buildings: Mapped['BuildingList'] = mapped_column(JSONBuildingListType, repr=False)
     world_nodes: Mapped[str] = mapped_column(Text, default='') 
     game_session: Mapped[int] = mapped_column(default=0)
 
@@ -35,7 +33,6 @@ class Player(Base):
         resource_buildings = BuildingHelper.get_initial_buildings('resource_building')
         production_buildings = BuildingHelper.get_initial_buildings('production_building')
         technology_buildings = BuildingHelper.get_initial_buildings('technology_building')
-        print(resource_buildings)
         return Player(
             name=name,
             resources=resources,

@@ -17,13 +17,20 @@ Gameplay Komponenten:
 - Spieler
 - Streamer (mayor)
 
+--------------------------
 
+containerize it
 
-TO FUCKIN DO
+- build api for community
+-- create new community
+-- select node
+-- get community info
+-- list players
+-- get player
 
-- we need Datenban
-- make gameconfigs for buildings and Units
-- gameconfigs = basis of values
-- serialize data maybe json of "what builds does a palayer have"
-- split gameconfig in units buildings + config dir
-- 
+- build api for player
+-- create new player
+-- building api
+--- build <building>
+--- get building info
+--- list buildings [<type>]

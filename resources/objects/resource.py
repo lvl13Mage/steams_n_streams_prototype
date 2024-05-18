@@ -40,6 +40,7 @@ class ResourceCollection:
         })
     
     def fromJson(json_data):
+        print(json_data)
         data = json.loads(json_data)
         return ResourceCollection().setResources(**data)
 

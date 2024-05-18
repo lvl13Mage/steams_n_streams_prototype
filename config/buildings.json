@@ -386,7 +386,68 @@
                 }
             }
         },
-        "production_building": {},
+        "production_building": {
+            "1": {
+                "name": "Infantery Barracks",
+                "description": "Produces infantery units",
+                "levels": {
+                    "0": {
+                        "production_time": 0,
+                        "cost": {
+                            "coal": 0,
+                            "water": 0,
+                            "copper": 0,
+                            "aetherum": 0
+                        }
+                    },
+                    "1": {
+                        "production_time": 300,
+                        "cost": {
+                            "coal": 100,
+                            "water": 200,
+                            "copper": 100,
+                            "aetherum": 0
+                        }
+                    },
+                    "2": {
+                        "production_time": 600,
+                        "cost": {
+                            "coal": 200,
+                            "water": 400,
+                            "copper": 200,
+                            "aetherum": 0
+                        }
+                    },
+                    "3": {
+                        "production_time": 900,
+                        "cost": {
+                            "coal": 300,
+                            "water": 600,
+                            "copper": 300,
+                            "aetherum": 0
+                        }
+                    },
+                    "4": {
+                        "production_time": 1200,
+                        "cost": {
+                            "coal": 400,
+                            "water": 800,
+                            "copper": 400,
+                            "aetherum": 0
+                        }
+                    },
+                    "5": {
+                        "production_time": 1500,
+                        "cost": {
+                            "coal": 500,
+                            "water": 1000,
+                            "copper": 500,
+                            "aetherum": 0
+                        }
+                    }
+                }
+            }
+        },
         "technology_building": {}
     }
 }

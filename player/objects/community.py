@@ -12,9 +12,9 @@ if TYPE_CHECKING:
 class Community(Base):
     __tablename__ = 'community'
     id: Mapped[int] = mapped_column(primary_key=True, init=False)
+    
     community_node: Mapped['CommunityNode'] = relationship(back_populates='community', init=False)
     community_players: Mapped[list['Player']] = relationship(back_populates='community', init=False)
-
 
     def create_new_community():
         return Community()
