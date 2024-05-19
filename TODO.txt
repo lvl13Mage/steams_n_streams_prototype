@@ -30,7 +30,17 @@ containerize it
 
 - build api for player
 -- create new player
+-- get resources
 -- building api
 --- build <building>
 --- get building info
 --- list buildings [<type>]
+
+!!! check factory creation with objects like ResourceCollection (propably buildings)
+events maybe with timeline based system, define event causing actions and keep a track in player. then evaluate from event to event which calculcation conditions apply
+maybe look at stricter typing for resources
+maybe replace json with pickle (native python stuff)
+
+sqlalchemy does not persist change automaticaly for player building upgrade...dunno why
+chatgpt chat about making changes known to sqlalchemy may help
+manual approach works but well not nice to do that

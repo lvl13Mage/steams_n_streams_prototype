@@ -1,8 +1,9 @@
 from dataclasses import dataclass, field
 from sqlalchemy import Column, Integer, String, ForeignKey, Text, TypeDecorator
 from sqlalchemy.orm import relationship, Mapped, mapped_column
-from database import Base
+from database.models import Base
 import json
+import time
 from typing import TYPE_CHECKING
 
 from resources.objects.resource import JSONEncodedResourceCollection, ResourceCollection
@@ -13,34 +14,39 @@ from buildings.services.building_helper import BuildingHelper
 if TYPE_CHECKING:
     from player.objects.community import Community
 
+@dataclass
 class Player(Base):
     __tablename__ = 'player'
     id: Mapped[int] = mapped_column(init=False, primary_key=True)
     name: Mapped[str] = mapped_column(String(30))
     community_id: Mapped[int] = mapped_column(ForeignKey('community.id'), init=False)
     community: Mapped['Community'] = relationship(back_populates='community_players')
-    resources: Mapped['ResourceCollection'] = mapped_column(JSONEncodedResourceCollection)
     resource_buildings: Mapped['BuildingList'] = mapped_column(JSONBuildingListType, repr=False)
     production_buildings: Mapped['BuildingList'] = mapped_column(JSONBuildingListType, repr=False)
     technology_buildings: Mapped['BuildingList'] = mapped_column(JSONBuildingListType, repr=False)
+    resources: Mapped['ResourceCollection'] = mapped_column(JSONEncodedResourceCollection, repr=False, default_factory=ResourceCollection)
     world_nodes: Mapped[str] = mapped_column(Text, default='') 
     game_session: Mapped[int] = mapped_column(default=0)
+    last_updated: Mapped[int] = mapped_column(default=0, init=True)
 
     @staticmethod
     def create_new_player(community, name):
         print('Creating new player...')
-        resources = ResourceCollection()
+        initial_resources = ResourceCollection().setResources(coal=500, water=500, copper=500, aetherum=500)
+        last_updated = int(time.time())
         resource_buildings = BuildingHelper.get_initial_buildings('resource_building')
         production_buildings = BuildingHelper.get_initial_buildings('production_building')
         technology_buildings = BuildingHelper.get_initial_buildings('technology_building')
-        return Player(
+        player = Player(
             name=name,
-            resources=resources,
             community=community,
+            resources=initial_resources,
             resource_buildings=resource_buildings,
             production_buildings=production_buildings,
-            technology_buildings=technology_buildings
+            technology_buildings=technology_buildings,
+            last_updated=last_updated
         )
+        return player
     
     def __repr__(self):
         return {
@@ -52,7 +58,8 @@ class Player(Base):
             'game_session': self.game_session,
             'resource_buildings': self.resource_buildings,
             'production_buildings': self.production_buildings,
-            'technology_buildings': self.technology_buildings
+            'technology_buildings': self.technology_buildings,
+            'last_updated': self.last_updated
         }
 
 # typedecorator to return list of players consisting of ids

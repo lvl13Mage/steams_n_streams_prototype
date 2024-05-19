@@ -1,5 +1,5 @@
 from dataclasses import dataclass, field
-from database import Base
+from database.models import Base
 from sqlalchemy import Column, Integer, ForeignKey
 from sqlalchemy.orm import relationship, Mapped, mapped_column
 from typing import TYPE_CHECKING

@@ -18,3 +18,13 @@ def get_player(response: Response, name_or_id: str):
     print(player.production_buildings)
     print(player.resource_buildings)
     return "{ 'name': 'test'}"
+
+@router.get("/debug/community/{name_or_id}")
+def get_community(response: Response, name_or_id: str):
+    community = session.query(Community).filter(Community.id == name_or_id).first()
+    print(community in session.dirty)
+    response.headers["Content-Type"] = "application/json"
+    response_data = {}
+    for player in community.community_players:
+        response_data[player.id] = player.name
+    return json.dumps(response_data)

@@ -35,35 +35,42 @@ class BuildingHelper:
         if building_data is None:
             building_data = BuildingGameConfig().get_building('resource_building', building_id)
         level_data = building_data['levels'][str(building_level)]
+        next_level_cost = ResourceCollection().setResources(**building_data['levels'][str(building_level + 1)]['cost']) if str(building_level + 1) in building_data['levels'] else None
+        print(next_level_cost.toJson())
         return ResourceBuilding(
             id=building_id,
             name=building_data['name'],
-            cost=ResourceCollection().setResources(**level_data['cost']),
+            cost=next_level_cost,
             production_time=level_data['production_time'],
             resource_production=ResourceCollection().setResources(**level_data['production']),
-            building_level=building_level
+            building_level=building_level,
+            production_start_time=0
         )
 
     def get_production_building(building_id, building_level, building_data = None):
         if building_data is None:
             building_data = BuildingGameConfig().get_building('production_building', building_id)
         level_data = building_data['levels'][str(building_level)]
+        next_level_cost = ResourceCollection().setResources(**building_data['levels'][str(building_level + 1)]['cost']) if str(building_level + 1) in building_data['levels'] else None
         return ProductionBuilding(
             id=building_id,
             name=building_data['name'],
-            cost=ResourceCollection().setResources(**level_data['cost']),
+            cost=next_level_cost,
             production_time=level_data['production_time'],
-            building_level=building_level
+            building_level=building_level,
+            production_start_time=0
         )
     
     def get_technology_building(building_id, building_level, building_data = None):
         if building_data is None:
             building_data = BuildingGameConfig().get_building('technology_building', building_id)
         level_data = building_data['levels'][str(building_level)]
+        next_level_cost = ResourceCollection().setResources(**building_data['levels'][str(building_level + 1)]['cost']) if str(building_level + 1) in building_data['levels'] else None
         return TechnologyBuilding(
             id=building_id,
             name=building_data['name'],
-            cost=ResourceCollection().setResources(**level_data['cost']),
+            cost=next_level_cost,
             production_time=level_data['production_time'],
-            building_level=building_level
+            building_level=building_level,
+            production_start_time=0
         )

@@ -27,12 +27,23 @@ class BuildingList:
     def remove(self, item):
         self._items.remove(item)
 
+    def update(self, index, item):
+        if not isinstance(item, self._allowed_types):
+            raise TypeError("Item must be an instance of ResourceBuilding, ProductionBuilding, or TechnologyBuilding")
+        
+        if type(item) != self._type:
+            raise TypeError(f"Item must be of type {self._type.__name__}")
+        
+        self._items[index] = item
+        print("update", self._items)
+
     def to_json(self):
         type_name = None
         items = []
         if self._items:
+            print("to_json_list", self._items)
             type_name = self._type.__name__
-            items = [{'id': b.id, 'building_level': b.building_level} for b in self._items]
+            items = [{'id': b.id, 'building_level': b.building_level, 'production_start_time': b.production_start_time} for b in self._items]
         return json.dumps({
             'type': type_name,
             'buildings': items
@@ -52,6 +63,9 @@ class BuildingList:
 
     def __getitem__(self, index):
         return self._items[index]
+    
+    def __setitem__(self, index, value):
+        self.update(index, value)
 
     def __len__(self):
         return len(self._items)

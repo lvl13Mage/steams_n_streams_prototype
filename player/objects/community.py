@@ -1,5 +1,5 @@
 from dataclasses import dataclass, field
-from database import Base
+from database.models import Base
 from sqlalchemy import Column, Integer, String, Text, ForeignKey
 from sqlalchemy.orm import relationship, Mapped, mapped_column
 from typing import TYPE_CHECKING
@@ -9,6 +9,7 @@ if TYPE_CHECKING:
     from game.objects.community_node import CommunityNode
     from player.objects.player import JSONEncodedPlayerList, Player
 
+@dataclass
 class Community(Base):
     __tablename__ = 'community'
     id: Mapped[int] = mapped_column(primary_key=True, init=False)

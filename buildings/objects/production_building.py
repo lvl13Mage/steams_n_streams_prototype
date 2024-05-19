@@ -9,11 +9,13 @@ from resources.objects.resource import ResourceCollection
 @dataclass
 class ProductionBuilding(Building):
     building_level: int
+    production_start_time: int
     
     def toJson(self):
         return json.dumps({
             'id': self.id,
-            'building_level': self.building_level
+            'building_level': self.building_level,
+            'production_start_time': self.production_start_time
         })
     
     def fromJson(resource_json):
@@ -28,7 +30,8 @@ class ProductionBuilding(Building):
             name=building['name'],
             cost=ResourceCollection().setResources(**level_data['cost']),
             production_time=level_data['production_time'],
-            building_level=level
+            building_level=level,
+            production_start_time=building_data['production_start_time']
         )
     
 class JSONEncodedProductionBuilding(TypeDecorator):

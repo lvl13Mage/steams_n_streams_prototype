@@ -10,15 +10,17 @@ from resources.objects.resource import ResourceCollection
 class ResourceBuilding(Building):
     building_level: int
     resource_production: ResourceCollection
+    production_start_time: int
 
-    def get_production(self, current_time, last_update_time):
-        time_delta = (current_time - last_update_time) / 3600
+    def get_production(self, time_difference):
+        time_delta = time_difference / 3600
         return self.resource_production * time_delta
 
     def toJson(self):
         return json.dumps({
             'id': self.id,
-            'building_level': self.building_level
+            'building_level': self.building_level,
+            'production_start_time': self.production_start_time
         })
     
     def fromJson(resource_json):
@@ -28,13 +30,15 @@ class ResourceBuilding(Building):
         id = building_data['id']
         level = building_data['building_level']
         level_data = building["levels"][str(level)]
+        cost = ResourceCollection().setResources(**buildingGameConfig.get_building('resource_building', id)['levels'][str(level+1)]['cost']) if str(level+1) in building['levels'] else None
         return ResourceBuilding(
             id=id,
             name=building['name'],
-            cost=ResourceCollection().setResources(**level_data['cost']),
+            cost=cost,
             production_time=level_data['production_time'],
             building_level=level,
-            resource_production=ResourceCollection().setResources(**level_data['production'])
+            resource_production=ResourceCollection().setResources(**level_data['production']),
+            production_start_time=building_data['production_start_time']
         )
     
 class JSONEncodedResourceBuilding(TypeDecorator):
