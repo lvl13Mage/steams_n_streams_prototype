@@ -34,6 +34,15 @@ class TechnologyBuilding(Building):
             production_start_time=building_data['production_start_time']
         )
     
+    def __repr__(self):
+        return json.dumps({
+            'id': self.id,
+            'name': self.name,
+            'cost': json.loads(str(self.cost)),
+            'building_level': self.building_level,
+            'production_start_time': self.production_start_time
+        })
+    
 class JSONEncodedTechnologyBuilding(TypeDecorator):
     impl = Text
 

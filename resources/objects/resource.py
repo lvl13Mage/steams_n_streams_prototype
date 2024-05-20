@@ -1,6 +1,7 @@
 import types
 import json
 from sqlalchemy import TypeDecorator, Text
+from sqlalchemy.ext.mutable import Mutable
 from dataclasses import dataclass, field
 
 @dataclass
@@ -18,7 +19,7 @@ class Resource:
         return False
 
 @dataclass
-class ResourceCollection:
+class ResourceCollection(Mutable):
     coal: Resource = field(default_factory=lambda: Resource('Coal'))
     water: Resource = field(default_factory=lambda: Resource('Water'))
     copper: Resource = field(default_factory=lambda: Resource('Copper'))
@@ -29,6 +30,7 @@ class ResourceCollection:
         if water is not None: self.water.quantity = water
         if copper is not None: self.copper.quantity = copper
         if aetherum is not None: self.aetherum.quantity = aetherum
+        self.changed()
         return self
     
     def toJson(self):
@@ -48,6 +50,7 @@ class ResourceCollection:
         self.water.quantity += other.water.quantity
         self.copper.quantity += other.copper.quantity
         self.aetherum.quantity += other.aetherum.quantity
+        self.changed()
         return self
 
     def __add__(self, other):
@@ -62,6 +65,7 @@ class ResourceCollection:
         self.water.quantity -= other.water.quantity
         self.copper.quantity -= other.copper.quantity
         self.aetherum.quantity -= other.aetherum.quantity
+        self.changed()
         return self
 
     def __sub__(self, other):
@@ -78,9 +82,34 @@ class ResourceCollection:
             water = self.water.quantity * factor,
             copper = self.copper.quantity * factor,
             aetherum = self.aetherum.quantity * factor)
+
+    @classmethod
+    def coerce(cls, key, value):
+        # Convert plain dictionary to ResourceCollection
+        if not isinstance(value, cls):
+            if isinstance(value, dict):
+                return cls.fromJson(json.dumps(value))
+        return value
+
+    def __lt__(self, other):
+        return self.coal.quantity < other.coal.quantity and self.water.quantity < other.water.quantity and self.copper.quantity < other.copper.quantity and self.aetherum.quantity < other.aetherum.quantity
     
+    def __le__(self, other):
+        return self.coal.quantity <= other.coal.quantity and self.water.quantity <= other.water.quantity and self.copper.quantity <= other.copper.quantity and self.aetherum.quantity <= other.aetherum.quantity
+
+    def __gt__(self, other):
+        return self.coal.quantity > other.coal.quantity and self.water.quantity > other.water.quantity and self.copper.quantity > other.copper.quantity and self.aetherum.quantity > other.aetherum.quantity
+    
+    def __ge__(self, other):
+        return self.coal.quantity >= other.coal.quantity and self.water.quantity >= other.water.quantity and self.copper.quantity >= other.copper.quantity and self.aetherum.quantity >= other.aetherum.quantity
+
     def __repr__(self) -> str:
-        return f"ResourceCollection(coal={self.coal.quantity}, water={self.water.quantity}, copper={self.copper.quantity}, aetherum={self.aetherum.quantity})"
+        return json.dumps({
+            'coal': self.coal.quantity,
+            'water': self.water.quantity,
+            'copper': self.copper.quantity,
+            'aetherum': self.aetherum.quantity
+        })
     
 class JSONEncodedResourceCollection(TypeDecorator):
     """Stores and retrieves JSON as ResourceCollection."""

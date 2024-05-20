@@ -1,15 +1,17 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field
+from sqlalchemy.ext.mutable import Mutable
 from sqlalchemy import TypeDecorator, Text
 import json
+from typing import List, Union
 
 from buildings.objects.production_building import ProductionBuilding
 from buildings.objects.resource_building import ResourceBuilding
 from buildings.objects.technology_building import TechnologyBuilding
 
 @dataclass
-class BuildingList:
-    _items = None
-    _type = None
+class BuildingList(Mutable):
+    _items: List[Union[ResourceBuilding, ProductionBuilding, TechnologyBuilding]] = field(default_factory=list)
+    _type = Union[None, type]
     _allowed_types = (ResourceBuilding, ProductionBuilding, TechnologyBuilding)
 
     def add(self, item):
@@ -23,9 +25,12 @@ class BuildingList:
             raise TypeError(f"All items must be of type {self._type.__name__}")
         
         self._items.append(item)
+        self.changed() # Notify SQLAlchemy that the list has been modified
+        
 
     def remove(self, item):
         self._items.remove(item)
+        self.changed() # Notify SQLAlchemy that the list has been modified
 
     def update(self, index, item):
         if not isinstance(item, self._allowed_types):
@@ -35,6 +40,7 @@ class BuildingList:
             raise TypeError(f"Item must be of type {self._type.__name__}")
         
         self._items[index] = item
+        self.changed() # Notify SQLAlchemy that the list has been modified
         print("update", self._items)
 
     def to_json(self):
@@ -69,9 +75,21 @@ class BuildingList:
 
     def __len__(self):
         return len(self._items)
-
-    def __str__(self):
-        return str(self._items)
+    
+    def __repr__(self):
+        return json.dumps({
+            'type': self._type.__name__ if self._type else None,
+            'buildings': [json.loads(str(b)) for b in self._items]
+        })
+    
+    @classmethod
+    def coerce(cls, key, value):
+        """Convert plain dict to BuildingList."""
+        if not isinstance(value, cls):
+            if isinstance(value, dict):
+                return cls.from_json(json.dumps(value))
+            return super().coerce(key, value)
+        return value
     
 class JSONBuildingListType(TypeDecorator):
     impl = Text

@@ -30,7 +30,7 @@ class ResourceBuilding(Building):
         id = building_data['id']
         level = building_data['building_level']
         level_data = building["levels"][str(level)]
-        cost = ResourceCollection().setResources(**buildingGameConfig.get_building('resource_building', id)['levels'][str(level+1)]['cost']) if str(level+1) in building['levels'] else None
+        cost = ResourceCollection().setResources(**buildingGameConfig.get_building('resource_building', id)['levels'][str(level+1)]['cost']) if str(level+1) in building['levels'] else ResourceCollection()
         return ResourceBuilding(
             id=id,
             name=building['name'],
@@ -40,6 +40,16 @@ class ResourceBuilding(Building):
             resource_production=ResourceCollection().setResources(**level_data['production']),
             production_start_time=building_data['production_start_time']
         )
+    
+    def __repr__(self):
+        return json.dumps({
+            'id': self.id,
+            'name': self.name,
+            'cost': json.loads(str(self.cost)),
+            'building_level': self.building_level,
+            'production_start_time': self.production_start_time,
+            'resource_production': json.loads(str(self.resource_production))
+        })
     
 class JSONEncodedResourceBuilding(TypeDecorator):
     impl = Text

@@ -17,6 +17,7 @@ class PlayerSessionService:
     def create_player(community_id, name):
         community = session.query(Community).where(Community.id == community_id).first()
         player = Player.create_new_player(community, name)
+        print("create new player player object resource buildings", player.resource_buildings)
         session.add(player)
         session.commit()
         return player

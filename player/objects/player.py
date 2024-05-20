@@ -1,6 +1,7 @@
 from dataclasses import dataclass, field
 from sqlalchemy import Column, Integer, String, ForeignKey, Text, TypeDecorator
 from sqlalchemy.orm import relationship, Mapped, mapped_column
+from sqlalchemy.ext.mutable import Mutable
 from database.models import Base
 import json
 import time
@@ -21,10 +22,10 @@ class Player(Base):
     name: Mapped[str] = mapped_column(String(30))
     community_id: Mapped[int] = mapped_column(ForeignKey('community.id'), init=False)
     community: Mapped['Community'] = relationship(back_populates='community_players')
-    resource_buildings: Mapped['BuildingList'] = mapped_column(JSONBuildingListType, repr=False)
-    production_buildings: Mapped['BuildingList'] = mapped_column(JSONBuildingListType, repr=False)
-    technology_buildings: Mapped['BuildingList'] = mapped_column(JSONBuildingListType, repr=False)
-    resources: Mapped['ResourceCollection'] = mapped_column(JSONEncodedResourceCollection, repr=False, default_factory=ResourceCollection)
+    resource_buildings: Mapped['BuildingList'] = mapped_column(JSONBuildingListType, default_factory=BuildingList)
+    production_buildings: Mapped['BuildingList'] = mapped_column(JSONBuildingListType, default_factory=BuildingList)
+    technology_buildings: Mapped['BuildingList'] = mapped_column(JSONBuildingListType, default_factory=BuildingList)
+    resources: Mapped['ResourceCollection'] = mapped_column(JSONEncodedResourceCollection, default_factory=ResourceCollection)
     world_nodes: Mapped[str] = mapped_column(Text, default='') 
     game_session: Mapped[int] = mapped_column(default=0)
     last_updated: Mapped[int] = mapped_column(default=0, init=True)
@@ -49,19 +50,18 @@ class Player(Base):
         return player
     
     def __repr__(self):
-        return {
+        return json.dumps({
             'id': self.id,
             'name': self.name,
             'community_id': self.community_id,
-            'resources': self.resources,
+            'resources': str(self.resources),  # Convert to string
             'world_nodes': self.world_nodes,
             'game_session': self.game_session,
-            'resource_buildings': self.resource_buildings,
-            'production_buildings': self.production_buildings,
-            'technology_buildings': self.technology_buildings,
-            'last_updated': self.last_updated
-        }
-
+            'resource_buildings': str(self.resource_buildings),  # Convert to string
+            'production_buildings': str(self.production_buildings),  # Convert to string
+            'technology_buildings': str(self.technology_buildings)  # Convert to string
+        })
+    
 # typedecorator to return list of players consisting of ids
 class JSONEncodedPlayerList(TypeDecorator):
     impl = Text

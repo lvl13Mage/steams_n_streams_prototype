@@ -1,5 +1,11 @@
 from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.ext.mutable import Mutable
 from database.base import CustomBase
+from buildings.objects.building_list import JSONBuildingListType, BuildingList
+from resources.objects.resource import JSONEncodedResourceCollection, ResourceCollection
+
+BuildingList.associate_with(JSONBuildingListType)
+ResourceCollection.associate_with(JSONEncodedResourceCollection)
 
 Base = CustomBase
 
