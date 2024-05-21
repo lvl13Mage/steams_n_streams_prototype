@@ -29,7 +29,7 @@
                             "aetherum": 0
                         },
                         "production": {
-                            "coal": 10,
+                            "coal": 50,
                             "water": 0,
                             "copper": 0,
                             "aetherum": 0
@@ -44,7 +44,7 @@
                             "aetherum": 0
                         },
                         "production": {
-                            "coal": 20,
+                            "coal": 75,
                             "water": 0,
                             "copper": 0,
                             "aetherum": 0
@@ -59,7 +59,7 @@
                             "aetherum": 0
                         },
                         "production": {
-                            "coal": 30,
+                            "coal": 150,
                             "water": 0,
                             "copper": 0,
                             "aetherum": 0
@@ -74,7 +74,7 @@
                             "aetherum": 0
                         },
                         "production": {
-                            "coal": 40,
+                            "coal": 250,
                             "water": 0,
                             "copper": 0,
                             "aetherum": 0
@@ -89,7 +89,7 @@
                             "aetherum": 0
                         },
                         "production": {
-                            "coal": 50,
+                            "coal": 400,
                             "water": 0,
                             "copper": 0,
                             "aetherum": 0
@@ -126,7 +126,7 @@
                         },
                         "production": {
                             "coal": 0,
-                            "water": 10,
+                            "water": 50,
                             "copper": 0,
                             "aetherum": 0
                         }
@@ -141,7 +141,7 @@
                         },
                         "production": {
                             "coal": 0,
-                            "water": 20,
+                            "water": 75,
                             "copper": 0,
                             "aetherum": 0
                         }
@@ -156,7 +156,7 @@
                         },
                         "production": {
                             "coal": 0,
-                            "water": 30,
+                            "water": 150,
                             "copper": 0,
                             "aetherum": 0
                         }
@@ -171,7 +171,7 @@
                         },
                         "production": {
                             "coal": 0,
-                            "water": 40,
+                            "water": 250,
                             "copper": 0,
                             "aetherum": 0
                         }
@@ -186,7 +186,7 @@
                         },
                         "production": {
                             "coal": 0,
-                            "water": 50,
+                            "water": 400,
                             "copper": 0,
                             "aetherum": 0
                         }
@@ -223,7 +223,7 @@
                         "production": {
                             "coal": 0,
                             "water": 0,
-                            "copper": 10,
+                            "copper": 50,
                             "aetherum": 0
                         }
                     },
@@ -238,7 +238,7 @@
                         "production": {
                             "coal": 0,
                             "water": 0,
-                            "copper": 20,
+                            "copper": 75,
                             "aetherum": 0
                         }
                     },
@@ -253,7 +253,7 @@
                         "production": {
                             "coal": 0,
                             "water": 0,
-                            "copper": 30,
+                            "copper": 150,
                             "aetherum": 0
                         }
                     },
@@ -268,7 +268,7 @@
                         "production": {
                             "coal": 0,
                             "water": 0,
-                            "copper": 40,
+                            "copper": 250,
                             "aetherum": 0
                         }
                     },
@@ -283,7 +283,7 @@
                         "production": {
                             "coal": 0,
                             "water": 0,
-                            "copper": 50,
+                            "copper": 400,
                             "aetherum": 0
                         }
                     }
@@ -320,7 +320,7 @@
                             "coal": 0,
                             "water": 0,
                             "copper": 0,
-                            "aetherum": 10
+                            "aetherum": 50
                         }
                     },
                     "2": {
@@ -335,7 +335,7 @@
                             "coal": 0,
                             "water": 0,
                             "copper": 0,
-                            "aetherum": 20
+                            "aetherum": 75
                         }
                     },
                     "3": {
@@ -350,7 +350,7 @@
                             "coal": 0,
                             "water": 0,
                             "copper": 0,
-                            "aetherum": 30
+                            "aetherum": 150
                         }
                     },
                     "4": {
@@ -365,7 +365,7 @@
                             "coal": 0,
                             "water": 0,
                             "copper": 0,
-                            "aetherum": 40
+                            "aetherum": 250
                         }
                     },
                     "5": {
@@ -380,7 +380,7 @@
                             "coal": 0,
                             "water": 0,
                             "copper": 0,
-                            "aetherum": 50
+                            "aetherum": 400
                         }
                     }
                 }

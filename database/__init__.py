@@ -1,17 +1,17 @@
 from sqlalchemy import create_engine, Column, Integer, String, ForeignKey
-from sqlalchemy.orm import sessionmaker, relationship
+from sqlalchemy.orm import sessionmaker, relationship, scoped_session
 from sqlalchemy.ext.declarative import declarative_base
 from database.models import Base
 
-# Setup engine
-def setup_database():
-    engine = create_engine('mysql+mysqlconnector://bg:bg@localhost:3307/bg', echo=True)
-    Session = sessionmaker(bind=engine)
-    session = Session()
-#
-    print('Creating tables...')
-    Base.metadata.create_all(engine)
+DATABASE_URL = 'mysql+mysqlconnector://bg:bg@localhost:3307/bg'
 
-    return session
+engine = create_engine(DATABASE_URL, echo=True)
+SessionLocal = scoped_session(sessionmaker(autocommit=False, autoflush=False, bind=engine))
 
-session = setup_database()
+# Dependency
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()

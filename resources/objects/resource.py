@@ -92,17 +92,19 @@ class ResourceCollection(Mutable):
         return value
 
     def __lt__(self, other):
-        return self.coal.quantity < other.coal.quantity and self.water.quantity < other.water.quantity and self.copper.quantity < other.copper.quantity and self.aetherum.quantity < other.aetherum.quantity
+        print(False and False)
+        # for each resource, check if the quantity is less than the other, if only one is true then return True
+        return self.coal.quantity < other.coal.quantity or self.water.quantity < other.water.quantity or self.copper.quantity < other.copper.quantity or self.aetherum.quantity < other.aetherum.quantity
     
     def __le__(self, other):
-        return self.coal.quantity <= other.coal.quantity and self.water.quantity <= other.water.quantity and self.copper.quantity <= other.copper.quantity and self.aetherum.quantity <= other.aetherum.quantity
+        return self.coal.quantity <= other.coal.quantity or self.water.quantity <= other.water.quantity or self.copper.quantity <= other.copper.quantity or self.aetherum.quantity <= other.aetherum.quantity1
 
     def __gt__(self, other):
-        return self.coal.quantity > other.coal.quantity and self.water.quantity > other.water.quantity and self.copper.quantity > other.copper.quantity and self.aetherum.quantity > other.aetherum.quantity
+        return self.coal.quantity > other.coal.quantity or self.water.quantity > other.water.quantity or self.copper.quantity > other.copper.quantity or self.aetherum.quantity > other.aetherum.quantity
     
     def __ge__(self, other):
-        return self.coal.quantity >= other.coal.quantity and self.water.quantity >= other.water.quantity and self.copper.quantity >= other.copper.quantity and self.aetherum.quantity >= other.aetherum.quantity
-
+        return self.coal.quantity >= other.coal.quantity or self.water.quantity >= other.water.quantity or self.copper.quantity >= other.copper.quantity or self.aetherum.quantity >= other.aetherum.quantity
+    
     def __repr__(self) -> str:
         return json.dumps({
             'coal': self.coal.quantity,

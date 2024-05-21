@@ -1,12 +1,13 @@
-from fastapi import APIRouter, Response, Query
+from fastapi import APIRouter, Response, Query, Depends
+from sqlalchemy.orm import Session
 import json
 
-from database import session
 from player.objects.player import Player
 from player.objects.community import Community
 from game.objects.community_node import CommunityNode
 from game.objects.node import Node
 from game.objects.edge import Edge
+from api.database import get_db
 
 router = APIRouter()
 
@@ -14,7 +15,7 @@ router.prefix = "/node"
 router.tags = ["node"]
 
 @router.put("/migrate-nodes")
-def migrate_nodes(response: Response):
+def migrate_nodes(response: Response, db: Session = Depends(get_db)):
     # load config/map.json
     with open("config/map.json") as f:
         map = json.load(f)
@@ -24,22 +25,22 @@ def migrate_nodes(response: Response):
         node.id = i+1
         node.pos_x = point[0]
         node.pos_y = point[1]
-        session.add(node)
-    session.commit()
+        db.add(node)
+    db.commit()
     # Create an Edge object for each edge in the list.
     for edge in map["edges"]:
         edge_obj = Edge()
         edge_obj.node_id_a = edge[0]+1
         edge_obj.node_id_b = edge[1]+1
         edge_obj.weight = 1
-        session.add(edge_obj)
-    session.commit()
+        db.add(edge_obj)
+    db.commit()
     # Create a CommunityNode object for each Node object
-    for node in session.query(Node).all():
+    for node in db.query(Node).all():
         community_node = CommunityNode()
         community_node.node_id = node.id
         community_node.map_id = 1
-        session.add(community_node)
-    session.commit()
+        db.add(community_node)
+    db.commit()
     response.headers["Content-Type"] = "application/json"
     return json.dumps("migrated nodes")

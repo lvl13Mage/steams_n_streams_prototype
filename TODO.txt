@@ -36,6 +36,12 @@ containerize it
 --- get building info
 --- list buildings [<type>]
 
+next up!!!
+unit production
+second player
+basic combat
+twitch extension (or other ui)
+
 !!! check factory creation with objects like ResourceCollection (propably buildings)
 events maybe with timeline based system, define event causing actions and keep a track in player. then evaluate from event to event which calculcation conditions apply
 maybe look at stricter typing for resources

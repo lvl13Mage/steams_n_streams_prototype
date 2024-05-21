@@ -1,30 +1,30 @@
 import time
 
-from database import session
+from sqlalchemy.orm import Session
 from player.objects.player import Player
 from player.objects.community import Community
 
 
 class PlayerSessionService:
     @staticmethod
-    def get_player(player_id_or_name):
+    def get_player(db: Session, player_id_or_name):
         if isinstance(player_id_or_name, int):
-            player = session.query(Player).where(Player.id == player_id_or_name).first()
+            player = db.query(Player).where(Player.id == player_id_or_name).first()
         else:
-            player = session.query(Player).where(Player.name == player_id_or_name).first()
+            player = db.query(Player).where(Player.name == player_id_or_name).first()
         return player
     @staticmethod
-    def create_player(community_id, name):
-        community = session.query(Community).where(Community.id == community_id).first()
+    def create_player(db: Session, community_id, name):
+        community = db.query(Community).where(Community.id == community_id).first()
         player = Player.create_new_player(community, name)
         print("create new player player object resource buildings", player.resource_buildings)
-        session.add(player)
-        session.commit()
+        db.add(player)
+        db.commit()
         return player
 
     @staticmethod
-    def update_resources(player_id):
-        player = PlayerSessionService.get_player(player_id)
+    def update_resources(db: Session, player_id):
+        player = PlayerSessionService.get_player(db, player_id)
         current_time = int(time.time())
         last_updated = player.last_updated
 
@@ -38,4 +38,4 @@ class PlayerSessionService:
                 resource_production = resource_building.get_production(time_diff)
                 player.resources += resource_production
         player.last_updated = current_time
-        session.commit()
+        db.commit()

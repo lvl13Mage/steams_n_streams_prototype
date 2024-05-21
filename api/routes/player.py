@@ -1,8 +1,8 @@
-from fastapi import APIRouter, Response, Query
+from fastapi import APIRouter, Response, Depends, Query
+from sqlalchemy.orm import Session
 import json
 import time
 
-from database import session
 from player.objects.player import Player
 from player.objects.community import Community
 from game.objects.community_node import CommunityNode
@@ -12,7 +12,10 @@ from buildings.objects.building import Building
 from buildings.objects.resource_building import ResourceBuilding
 from buildings.objects.production_building import ProductionBuilding
 from buildings.objects.technology_building import TechnologyBuilding
+from api.database import get_db
 from typing import Union
+
+
 
 from services.player_session_service import PlayerSessionService
 
@@ -22,10 +25,10 @@ router.prefix = "/player"
 router.tags = ["player"]
 
 @router.get("/{name_or_id}")
-def get_player(response: Response, name_or_id: str):
-    player = PlayerSessionService.get_player(name_or_id)
+def get_player(response: Response, name_or_id: str, db: Session = Depends(get_db)):
+    player = PlayerSessionService.get_player(db, name_or_id)
     print("player resources before update", player.resources)
-    PlayerSessionService.update_resources(player.id)
+    PlayerSessionService.update_resources(db, player.id)
     print("player resources after update", player.resources)
     response.headers["Content-Type"] = "application/json"
     print("player repr", json.loads(str(player.resource_buildings)))
@@ -40,17 +43,17 @@ def get_player(response: Response, name_or_id: str):
     }
 
 @router.post("/create")
-def create_player(response: Response, name: str, community_id: int):
-    player = PlayerSessionService.create_player(community_id, name)
+def create_player(response: Response, name: str, community_id: int, db: Session = Depends(get_db)):
+    player = PlayerSessionService.create_player(db, community_id, name)
     print("player resource buildings", player.resource_buildings)
-    PlayerSessionService.update_resources(player.id)
+    PlayerSessionService.update_resources(db, player.id)
     response.headers["Content-Type"] = "application/json"
     return json.dumps(player.id)
 
 @router.post("/building/list")
-def get_building_list(response: Response, player_id: int, building_type: str = Query(default=None, pattern=r"resource_building|production_building|technology_building")):
-    player = PlayerSessionService.get_player(player_id)
-    PlayerSessionService.update_resources(player.id)
+def get_building_list(response: Response, player_id: int, building_type: str = Query(default=None, pattern=r"resource_building|production_building|technology_building"), db: Session = Depends(get_db)):
+    player = PlayerSessionService.get_player(db, player_id)
+    PlayerSessionService.update_resources(db, player.id)
 
     if building_type:
         match building_type:
@@ -71,9 +74,9 @@ def get_building_list(response: Response, player_id: int, building_type: str = Q
     }
 
 @router.post("/building/upgrade")
-def construct_building(response: Response, player_id: int, building_type: str, building_id: int):
-    player = PlayerSessionService.get_player(player_id)
-    PlayerSessionService.update_resources(player.id)
+def construct_building(response: Response, player_id: int, building_type: str, building_id: int, db: Session = Depends(get_db)):
+    player = PlayerSessionService.get_player(db, player_id)
+    PlayerSessionService.update_resources(db, player.id)
     
     # Get the building list based on the building type
     buildings = None
@@ -93,8 +96,11 @@ def construct_building(response: Response, player_id: int, building_type: str, b
     if current_building.production_start_time >= player.last_updated:
         return "Building is already in construction"
     # Check if the player has enough resources
+    print("resources before check", player.resources)
+    print("building cost", player.resource_buildings[building_id-1].cost)
     if player.resources < player.resource_buildings[building_id-1].cost:
         return "Not enough resources"
+    print("resources after check", player.resources)
     
     # Upgrade the building
     building_level = int(current_building.building_level)
@@ -106,8 +112,8 @@ def construct_building(response: Response, player_id: int, building_type: str, b
     # Replace the updated building in the list
     buildings[building_id - 1] = current_building
     # Save the updated player object
-    session.add(player)
-    session.commit()
-    print(player in session.dirty)
+    db.add(player)
+    db.commit()
+    print(player in db.dirty)
     response.headers["Content-Type"] = "application/json"
     return json.dumps({building.id: building.building_level for building in buildings})
